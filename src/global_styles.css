@@ -1,0 +1,7 @@
+/* Add application styles & imports to this file! */
+@use './material-theme.scss';
+
+body {
+  margin: 0;
+  font-family: Roboto, sans-serif;
+}
