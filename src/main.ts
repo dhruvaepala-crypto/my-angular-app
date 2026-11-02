@@ -1,4 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { provideHttpClient } from '@angular/common/http';
+import { Component, signal, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -1385,6 +1387,12 @@ const DEFAULT_PREFERENCES: Preferences = {
   `,
 })
 export class App {
+  private http = inject(HttpClient);
+
+ngOnInit() {
+  this.http.get<{ message: string }>('http://localhost:3000/api/hello')
+    .subscribe(data => console.log(data.message));
+}
   loggedIn = signal(false);
   view = signal<View>('dashboard');
   sidebarOpen = signal(false);
@@ -1523,4 +1531,8 @@ export class App {
   }
 }
 
-bootstrapApplication(App).catch(err => console.error(err));
+
+bootstrapApplication(App, {
+  providers: [provideHttpClient()]
+}).catch(err => console.error(err));
+
